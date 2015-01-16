@@ -1,52 +1,33 @@
-function creep() { return this; }
+function juggle() {
+  var result = 0; 
+  for (var n = 0; n < arguments.length; n++) {
+    result += arguments[n]; 
+  }
+  this.result = result; 
+}
 
-assert(creep() === window,
-  "Creeping in the window");
+// window this 
 
-var sneak = creep; 
+juggle(1,2,3);
 
-assert(sneak() === window,
-  "Sneaking in the window");
+assert(result === 6,
+  "The window has a result");
 
+// apply 
 
-assert(creep.name === 'creep',
-  "Creep is called creep");
-assert(sneak.name === 'creep',
-  "Sneak is called creep");
+var ninja1 = {};
 
-var ninja1 = {
-  skulk: creep 
-};
+juggle.apply(ninja1,[1,2,3,4]);
 
-assert(ninja1.skulk() === ninja1,
-  "The first ninja is skulking");
+assert(ninja1.result === 10,
+  "The first ninja has a result"); 
 
-// Question was about: 
-// "We don't say creep() has *become* a
-// method of ninja1; it hasn't..." on p 51. 
+// call 
 
-assert(ninja1.skulk.name === 'creep',
-  'ninja1.skulk is called creep');
+var ninja2 = {};
 
-// 'Well...' you may say.  
-// I think the main point for Resig & Bibeault is: 
-// "creep() is its own independent function
-// that can be invoked in numerous ways."
-// It still seems to me like there is no "copy"
-// of creep() being made here, no new definition, 
-// no weird magic causing the name to change
-// behind the scenes,
-// so ninja1.skulk is therefore a reference 
-// to none other than creep(), 
-// only the original creep()
-// still can be referenced as well. 
+juggle.call(ninja2,5,6,7,8);
 
-var ninja2 = {
-  skulk: sneak
-};
+assert(ninja2.result === 26,
+  "The second ninja has a result");
 
-assert(ninja2.skulk() === ninja2,
-  "The second ninja is skulking");
-
-assert(ninja2.skulk.name === 'creep',
-  "All of the creeps are called creep");
