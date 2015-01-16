@@ -1,33 +1,31 @@
-function juggle() {
-  var result = 0; 
-  for (var n = 0; n < arguments.length; n++) {
-    result += arguments[n]; 
-  }
-  this.result = result; 
-}
+var things = ['raindrops', 'roses', 'mittens', 'kittens']
 
-// window this 
+forEach(
+  things,
+  function(index) {
+    assert(this == things[index], // strict equality causes fail,  
+      "Expected value");        // maybe because... 
+  });
 
-juggle(1,2,3);
+forEach(
+  things,
+  function(index) {
+    assert(typeof this === 'object',
+      typeof this); // ...this makes these objs while... 
+  });
 
-assert(result === 6,
-  "The window has a result");
+assert(typeof things[0] === 'string',
+  typeof things[0]); // arr elements remain strings.   
 
-// apply 
+// oh well. 
 
-var ninja1 = {};
+var remix = ''; // ::BLASTS REMIX & DANCES WILDLY:: 
 
-juggle.apply(ninja1,[1,2,3,4]);
+forEach(
+  things,
+  function(index) {
+    remix += this; 
+  });
 
-assert(ninja1.result === 10,
-  "The first ninja has a result"); 
-
-// call 
-
-var ninja2 = {};
-
-juggle.call(ninja2,5,6,7,8);
-
-assert(ninja2.result === 26,
-  "The second ninja has a result");
-
+assert("A remix will appear",
+  remix + remix.split('').sort().join(''));
