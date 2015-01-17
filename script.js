@@ -1,31 +1,21 @@
-var things = ['raindrops', 'roses', 'mittens', 'kittens']
+var agent = {
+  signal: function beep(n) {
+    return n > 1 ? beep(n-1) + '-beep' : 'beep';
+  }
+};
 
-forEach(
-  things,
-  function(index) {
-    assert(this == things[index], // strict equality causes fail,  
-      "Expected value");        // maybe because... 
-  });
+// I cannot call beep() from the top level. 
+// I cannot call any such thing as agent.beep().
+// References to beep() seem to only exist inside beep().  
 
-forEach(
-  things,
-  function(index) {
-    assert(typeof this === 'object',
-      typeof this); // ...this makes these objs while... 
-  });
+assert(agent.signal(3) === 'beep-beep-beep', 
+  'Inline functions!'); 
 
-assert(typeof things[0] === 'string',
-  typeof things[0]); // arr elements remain strings.   
+// Neither can I, for instance... 
+window.beep = function signal() { 
+  return 'They call me '+signal.name+'.';
+};
+// then reference signal() from the top level.
 
-// oh well. 
-
-var remix = ''; // ::BLASTS REMIX & DANCES WILDLY:: 
-
-forEach(
-  things,
-  function(index) {
-    remix += this; 
-  });
-
-assert("A remix will appear",
-  remix + remix.split('').sort().join(''));
+assert(beep() === 'They call me signal.',
+  'beep() says it wants to be called signal.');
